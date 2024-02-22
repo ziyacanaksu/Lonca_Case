@@ -116,4 +116,3 @@ products = parse_xml(file_path)
 for i in products :
     print(i)
    
-'aaaaadjadjj'
