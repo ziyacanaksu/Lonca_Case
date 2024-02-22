@@ -64,7 +64,7 @@ def parse_xml(file_path):
             'discounted_price': '',
             'images': [],  # This will be overwritten by the list of image paths
             'is_discounted': '',
-            'name': product.attrib['Name'].title(),
+            'name': capitalize_turkish(product.attrib['Name']),
             'price': '',
             'price_unit': '',
             'product_type': '',
@@ -110,9 +110,29 @@ def parse_xml(file_path):
     return products
 
 
+def capitalize_turkish(s):
+    # Split the string into words to handle each word's first letter
+    words = s.split()
+    corrected_words = []
 
-file_path = 'lonca-sample.xml'
-products = parse_xml(file_path)
-for i in products :
-    print(i)
-   
+    for word in words:
+        if not word:
+            corrected_words.append(word)
+            continue
+        
+        # Handle the first letter of each word
+        first_letter = word[0]
+
+
+        # Correctly handle the rest of the word
+        rest = word[1:].replace('I', 'ı').lower()
+
+        corrected_words.append(first_letter + rest)
+
+    # Join the corrected words back into a string
+    return ' '.join(corrected_words)
+
+# Example usage
+product_name = "Büzgü Kollu T-shirt"
+formatted_name = capitalize_turkish(product_name)
+print(formatted_name)
