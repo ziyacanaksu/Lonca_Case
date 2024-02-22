@@ -98,7 +98,7 @@ def parse_xml(file_path):
             elif key == 'Series':
                 product_data['series'] = value
             elif key == 'Season':
-                product_data['status'] = "Active" if "Yaz" in value else "Inactive"
+                product_data['status'] = "Active" if product_data['quantity'] > 0 else "Inactive"
         
         # Add image paths to the product data
         images = product.find('Images')
