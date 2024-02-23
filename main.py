@@ -11,5 +11,5 @@ products = parse_xml('lonca-sample.xml')
 
 # Insert products into MongoDB
 for product in products:
-    print(product)
+    #print(product)
     insert_product(product,collection)
