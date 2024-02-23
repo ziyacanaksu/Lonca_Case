@@ -7,10 +7,16 @@ def insert_product(product_data, db_collection):
         # Insert the product if it does not exist
         db_collection.insert_one(product_data)
     else:
-        # Update the existing product, including the updatedAt field
+        # Update the existing product without altering the createdAt field
         update_data = product_data.copy()
-        update_data['updatedAt'] = datetime.now()  # Set the updatedAt to current time
         
+        # Ensure createdAt from the existing product is preserved
+        update_data['createdAt'] = existing_product['createdAt']
+        
+        # Set the updatedAt to current time
+        update_data['updatedAt'] = datetime.now()
+        
+        # Perform the update
         db_collection.update_one(
             {'_id': existing_product['_id']},
             {'$set': update_data}
