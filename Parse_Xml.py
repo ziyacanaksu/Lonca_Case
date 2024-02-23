@@ -17,6 +17,7 @@ def parse_description(description):
     # Find all <li> elements
     for li in soup.find_all('li'):
         text = li.get_text(strip=True)
+        #print(text)
         
         fabric_match = re.search(r'Kumaş Bilgisi:(.*)',text)
         if fabric_match:
@@ -27,7 +28,7 @@ def parse_description(description):
             # Extract measurements using regex, capturing labels and values
             product_measurements = re.findall(r'(\w+): (\d+ cm)', product_match.group(1))
             measurements['product_measurements'] = {label: value for label, value in product_measurements}
-            print(measurements['product_measurements'])
+            #print(measurements['product_measurements'])
         
         # Check if it's a model measurement
         model_match = re.search(r'Model Ölçüleri:(.*)', text)
@@ -37,11 +38,17 @@ def parse_description(description):
             measurements['model_measurements'] = {
                 label: (value + ('' if label == 'Kilo' else ' cm')) for label, value in model_measurements
             }
-            print(measurements['model_measurements'])
+            #print(measurements['model_measurements'])
+        size_match = re.search(r'Modelin üzerindeki ürün\s*(.*?)\s*beden', text)
+        print(size_match)
+        if size_match:
+            size = size_match.group(1) if size_match else ''
+            print(size)
+
         model_measurements_str = ", ".join(f"{k}: {v}" for k, v in measurements['model_measurements'].items())
         product_measurements_str = ", ".join(f"{k}: {v}" for k, v in measurements['product_measurements'].items())
 
-    return fabric, model_measurements_str, product_measurements_str
+    return fabric, model_measurements_str, product_measurements_str,size
 
 
    
@@ -56,7 +63,7 @@ def parse_xml(file_path):
     
     for product in root.findall('Product'):
         description_text = unescape(product.find('Description').text)
-        fabric, model_measurements_str, product_measurements_str = parse_description(description_text)
+        fabric, model_measurements_str, product_measurements_str,size = parse_description(description_text)
         
         product_data = {
             'stock_code': product.attrib['ProductId'],
@@ -69,7 +76,7 @@ def parse_xml(file_path):
             'price_unit': '',
             'product_type': '',
             'quantity': '',
-            'sample_size': '',
+            'sample_size': size,
             'series': '',
             'status': '',
             'fabric': fabric,
