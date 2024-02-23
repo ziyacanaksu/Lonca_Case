@@ -13,7 +13,7 @@ def parse_description(description):
         'product_measurements': {},
         'model_measurements': {}
     }
-    
+    size = ''
     # Find all <li> elements
     for li in soup.find_all('li'):
         text = li.get_text(strip=True)
@@ -40,7 +40,7 @@ def parse_description(description):
             }
             #print(measurements['model_measurements'])
         size_match = re.search(r'Modelin üzerindeki ürün\s*(.*?)\s*beden', text)
-        print(size_match)
+        #print(size_match)
         if size_match:
             size = size_match.group(1) if size_match else ''
             print(size)
@@ -140,6 +140,3 @@ def capitalize_turkish(s):
     return ' '.join(corrected_words)
 
 # Example usage
-product_name = "Büzgü Kollu T-shirt"
-formatted_name = capitalize_turkish(product_name)
-print(formatted_name)
