@@ -43,8 +43,8 @@ def parse_description(description):
         #print(size_match)
         if size_match:
             size = size_match.group(1) if size_match else ''
-            print(size)
-
+            
+        #converting values into string 
         model_measurements_str = ", ".join(f"{k}: {v}" for k, v in measurements['model_measurements'].items())
         product_measurements_str = ", ".join(f"{k}: {v}" for k, v in measurements['product_measurements'].items())
 
@@ -101,7 +101,7 @@ def parse_xml(file_path):
             elif key == 'Quantity':
                 product_data['quantity'] = int(value)
             elif key == 'Color':
-                product_data['color'] = value  
+                product_data['color'] = [value]  
             elif key == 'Series':
                 product_data['series'] = value
             elif key == 'Season':
@@ -139,4 +139,3 @@ def capitalize_turkish(s):
     # Join the corrected words back into a string
     return ' '.join(corrected_words)
 
-# Example usage
